@@ -1,0 +1,65 @@
+const memcash = require('../managers/memcachedManager.js');
+
+module.exports = {
+
+    async get(ctx) {
+        try {
+            const item = await memcash.getGoods(ctx.params.id);
+            if (typeof item === 'string') {
+                ctx.response.body = item;
+                ctx.status = 200;
+            } else {
+                ctx.status = 404;
+                ctx.response.body = {
+                    message: 'Not found',
+                };
+
+            }
+            console.info('GET', JSON.stringify(ctx.params.id), JSON.stringify(item));
+        } catch (error) {
+            ctx.response.body = {
+                message: error.message,
+            };
+
+            ctx.status = 404;
+        }
+    },
+
+    put: function (ctx, next) {
+        console.log(arguments)
+    },
+
+    async posto(ctx) {
+        try {
+            ctx.response.body = await memcash.addGoods(ctx.request.body);
+            ctx.status = 201;
+        } catch (error) {
+            ctx.response.body = {
+                message: error.message,
+            };
+            ctx.status = 400;
+        }
+        console.info('posto', JSON.stringify(ctx.response.code), JSON.stringify(ctx.response.body));
+    },
+
+    async deleteGoods(ctx, next) {
+        try {
+            const item = await memcash.deleteGoods(ctx.params.id);
+            if ( item === true) {
+
+                ctx.status = 204;
+            } else {
+                ctx.response.body = {
+                    message: 'Not found',
+                };
+                ctx.status = 400;
+            }
+            console.info('delete', JSON.stringify(ctx.params.id), JSON.stringify(item));
+        } catch (error) {
+            ctx.response.body = {
+                message: error.message,
+            };
+            ctx.response.code = 400;
+        }
+    }
+};
