@@ -15,7 +15,7 @@ module.exports = {
                 };
 
             }
-            console.info('GET', JSON.stringify(ctx.params.id), JSON.stringify(item));
+
         } catch (error) {
             ctx.response.body = {
                 message: error.message,
@@ -25,9 +25,7 @@ module.exports = {
         }
     },
 
-    put: function (ctx, next) {
-        console.log(arguments)
-    },
+
 
     async posto(ctx) {
         try {
@@ -39,7 +37,7 @@ module.exports = {
             };
             ctx.status = 400;
         }
-        console.info('posto', JSON.stringify(ctx.response.code), JSON.stringify(ctx.response.body));
+
     },
 
     async deleteGoods(ctx, next) {
